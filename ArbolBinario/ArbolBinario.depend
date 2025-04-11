@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1743527951 source:c:\users\surface\documents\estructura de datos\arbolbinario\main.cpp
+	<iostream>
+	"ArbolBB.hpp"
+
+1743527983 c:\users\surface\documents\estructura de datos\arbolbinario\arbolbb.hpp
+	"ArbolBB.tpp"
+
+1743528156 c:\users\surface\documents\estructura de datos\arbolbinario\arbolbb.tpp
+	"Cola.hpp"
+
+1740151965 c:\users\surface\documents\estructura de datos\arbolbinario\cola.hpp
+	"Cola.tpp"
+
+1742618219 c:\users\surface\documents\estructura de datos\arbolbinario\cola.tpp
+	<iostream>
+
+1744220590 source:c:\users\surface\documents\estructura de datos\abavl\arbolbinario\main.cpp
+	<iostream>
+	"ArbolBB.hpp"
+
+1744133312 c:\users\surface\documents\estructura de datos\abavl\arbolbinario\arbolbb.hpp
+	"ArbolBB.tpp"
+
+1744221410 c:\users\surface\documents\estructura de datos\abavl\arbolbinario\arbolbb.tpp
+	"Cola.hpp"
+
+1740151965 c:\users\surface\documents\estructura de datos\abavl\arbolbinario\cola.hpp
+	"Cola.tpp"
+
+1742618219 c:\users\surface\documents\estructura de datos\abavl\arbolbinario\cola.tpp
+	<iostream>
+
