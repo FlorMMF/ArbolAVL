@@ -22,11 +22,16 @@ int main()
     arbol.Agregar(30);
     arbol.Agregar(50);
     arbol.Agregar(45);
-    //arbol.Eliminar(1);
-    cout  << "Cantidad nodos  "<< arbol.ObtenerNumNodos()<< endl;
+    cout << "Antes de eliminar nodos:" << endl;
+    arbol.ImprimirNivel();
+
     arbol.Eliminar(-2);
     arbol.Eliminar(0);
+
+    cout << "Después de eliminar nodos:" << endl;
     arbol.ImprimirNivel();
+ 
+
 //
 //
 //    cout << "Altura " << arbol.ObtenerAltura()<< endl;

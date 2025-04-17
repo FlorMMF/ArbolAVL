@@ -191,50 +191,40 @@ void ArbolBB<T>::ImprimirNivel(Nodo * subraiz)const{
 
 template <typename T>
 void ArbolBB<T>::Eliminar(T v, Nodo *& subraiz){
-    if( (BuscarDir(v,subraiz) == nullptr) || (subraiz == nullptr) )return;
-    if(subraiz -> valor == v){
-        if( (subraiz -> hijoIzq == nullptr) && (subraiz -> hijoDer == nullptr)){
-            Nodo * porBorrar = subraiz;
+    if (!subraiz) return;
+
+    if (v < subraiz->valor){
+        Eliminar(v, subraiz->hijoIzq);
+    } else if (v > subraiz->valor){
+        Eliminar(v, subraiz->hijoDer);
+    } else{
+        if (!subraiz->hijoIzq && !subraiz->hijoDer){
+            delete subraiz;
             subraiz = nullptr;
-            delete porBorrar;
-            --numNodos;
-        }else if((subraiz -> hijoDer == nullptr)){
-            Nodo * porBorrar = subraiz;
-            subraiz = subraiz -> hijoIzq;
-            delete porBorrar;
-            --numNodos;
-        }else if((subraiz -> hijoIzq == nullptr)){
-            Nodo * porBorrar = subraiz;
-            subraiz = subraiz -> hijoDer;
-            delete porBorrar;
-            --numNodos;
-        }else{
-        //cuando tiene dos hijos
-            Nodo *& dirMayorMenor = BuscarMayor(subraiz -> hijoIzq);
-            subraiz -> valor = dirMayorMenor -> valor;
-            Eliminar(dirMayorMenor-> valor, dirMayorMenor);
-            subraiz -> Equilibrio = ObtenerAltura(subraiz -> hijoDer) - ObtenerAltura(subraiz -> hijoIzq);
-        }
-
-    }else{
-        if(subraiz -> valor > v){
-            Eliminar(v, subraiz -> hijoIzq);
-            subraiz -> Equilibrio = ObtenerAltura(subraiz -> hijoDer) - ObtenerAltura(subraiz -> hijoIzq);
-        }else{
-            Eliminar(v, subraiz -> hijoDer);
-            subraiz -> Equilibrio = ObtenerAltura(subraiz -> hijoDer) - ObtenerAltura(subraiz -> hijoIzq);
+        } else if (!subraiz->hijoIzq){
+            Nodo *temp = subraiz;
+            subraiz = subraiz->hijoDer;
+            delete temp;
+        } else if (!subraiz->hijoDer){
+            Nodo *temp = subraiz;
+            subraiz = subraiz->hijoIzq;
+            delete temp;
+        } else{
+            Nodo *&dirMayorMenor = BuscarMayor(subraiz->hijoIzq);
+            subraiz->valor = dirMayorMenor->valor;
+            Eliminar(dirMayorMenor->valor, dirMayorMenor);
         }
     }
-    if(subraiz != nullptr){
-        if(subraiz -> Equilibrio > 1 || subraiz -> Equilibrio < -1){
-        Equilibrar(subraiz);
+    if (subraiz){
+        subraiz->Equilibrio = ObtenerAltura(subraiz->hijoDer) - ObtenerAltura(subraiz->hijoIzq);
+        if (subraiz->Equilibrio > 1 || subraiz->Equilibrio < -1){
+            Equilibrar(subraiz);
+        }
     }
-    }
-
 }
 
 template <typename T>
-typename  ArbolBB<T>::Nodo *& ArbolBB<T>::BuscarMayor(Nodo *& subraiz) const{
+typename ArbolBB<T>::Nodo *& ArbolBB<T>::BuscarMayor(Nodo *& subraiz) const{
     if(subraiz == nullptr)throw ("Algo ha fallado buscando el mayor");
     if(subraiz -> hijoDer == nullptr){
        return subraiz;
@@ -244,7 +234,7 @@ typename  ArbolBB<T>::Nodo *& ArbolBB<T>::BuscarMayor(Nodo *& subraiz) const{
 }
 
 template <typename T>
-typename  ArbolBB<T>::Nodo *& ArbolBB<T>::BuscarMenor(Nodo *& subraiz) const{
+typename ArbolBB<T>::Nodo *& ArbolBB<T>::BuscarMenor(Nodo *& subraiz) const{
     if(subraiz == nullptr)throw ("Algo ha fallado buscando el menor");
     if(subraiz -> hijoIzq == nullptr){
        return subraiz;
@@ -263,40 +253,54 @@ int ArbolBB<T>::ObtenerAltura(Nodo * subraiz)const{
 template <typename T>
 void ArbolBB<T>::Equilibrar(Nodo *& subraiz){
     if(subraiz -> Equilibrio > 1){
-        if(subraiz -> hijoDer -> Equilibrio == -1){
-            SimpleDer(subraiz -> hijoDer);
+        if(subraiz -> hijoDer -> Equilibrio < 0){
+            DobleDer(subraiz);
+        } else{
+            SimpleIzq(subraiz);
         }
-        SimpleIzq(subraiz);
-    }else{
-        if(subraiz -> hijoIzq -> Equilibrio == 1){
-            SimpleIzq(subraiz -> hijoIzq);
+    } else if (subraiz -> Equilibrio < -1){
+        if (subraiz ->hijoIzq -> Equilibrio > 0){
+            DobleIzq(subraiz);
+        } else{
+            SimpleDer(subraiz);
         }
-        SimpleDer(subraiz);
     }
 }
-
 template <typename T>
 void ArbolBB<T>:: SimpleDer(Nodo *& subraiz){
+   if (!subraiz || !subraiz->hijoIzq) return;
     Nodo * aux = subraiz;
-    subraiz = subraiz -> hijoIzq;
-    aux -> hijoIzq = subraiz -> hijoDer;
-    subraiz -> hijoDer = aux;
+    subraiz = subraiz->hijoIzq;
 
-    subraiz -> hijoDer ->Equilibrio = ObtenerAltura(subraiz -> hijoDer -> hijoDer) - ObtenerAltura(subraiz -> hijoDer -> hijoIzq);
-    subraiz ->Equilibrio = ObtenerAltura(subraiz -> hijoDer) - ObtenerAltura(subraiz -> hijoIzq);
-
+    aux->hijoIzq = subraiz->hijoDer;
+    subraiz->hijoDer = aux;
+    if (subraiz->hijoDer){
+        subraiz->hijoDer->Equilibrio = ObtenerAltura(subraiz->hijoDer->hijoDer) - ObtenerAltura(subraiz->hijoDer->hijoIzq);
+    }
+    subraiz->Equilibrio = ObtenerAltura(subraiz->hijoDer) - ObtenerAltura(subraiz->hijoIzq);
 }
-
 
 template <typename T>
 void ArbolBB<T>::SimpleIzq(Nodo *& subraiz){
-    Nodo * aux = subraiz;
-    subraiz = subraiz -> hijoDer;
-    aux -> hijoDer = subraiz -> hijoIzq;
-    subraiz -> hijoIzq = aux;
-
-    subraiz -> hijoIzq ->Equilibrio = ObtenerAltura(subraiz -> hijoIzq-> hijoDer) - ObtenerAltura(subraiz -> hijoIzq-> hijoIzq);;
-    subraiz ->Equilibrio = ObtenerAltura(subraiz -> hijoDer) - ObtenerAltura(subraiz -> hijoIzq);;
+    if (!subraiz || !subraiz->hijoDer) return;
+    Nodo *aux = subraiz;
+    subraiz = subraiz->hijoDer;
+    aux->hijoDer = subraiz->hijoIzq;
+    subraiz->hijoIzq = aux;
+    if (subraiz->hijoIzq){
+        subraiz->hijoIzq->Equilibrio = ObtenerAltura(subraiz->hijoIzq->hijoDer) - ObtenerAltura(subraiz->hijoIzq->hijoIzq);
+    }
+    subraiz->Equilibrio = ObtenerAltura(subraiz->hijoDer) - ObtenerAltura(subraiz->hijoIzq);
 }
 
+template <typename T>
+void ArbolBB<T>::DobleDer(Nodo *& subraiz){
+    SimpleIzq(subraiz -> hijoDer);
+    SimpleDer(subraiz);
+}
 
+template <typename T>
+void ArbolBB<T>::DobleIzq(Nodo *& subraiz){
+    SimpleDer(subraiz -> hijoIzq);
+    SimpleIzq(subraiz);
+}

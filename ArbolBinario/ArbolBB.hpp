@@ -46,6 +46,8 @@ private:
     void Equilibrar(Nodo *& subraiz);
     void SimpleDer(Nodo *& subraiz);
     void SimpleIzq(Nodo *& subraiz);
+    void DobleDer(Nodo *& subraiz);
+    void DobleIzq(Nodo *& subraiz);
 
 };
 
