@@ -5,39 +5,43 @@ using namespace std;
 int main()
 {
     ArbolBB<double> arbol, copia;
-    arbol.Agregar(17);
-    arbol.Agregar(15);
-    arbol.Agregar(14);
-    arbol.Agregar(16);
-    arbol.Agregar(-2);
-    arbol.Agregar(15.5);
-    arbol.Agregar(10);
-    arbol.Agregar(0);
-    arbol.Agregar(1);
-    arbol.Agregar(5);
-    arbol.Agregar(27);
-    arbol.Agregar(23);
-    arbol.Agregar(652);
-    arbol.Agregar(40);
+    cout << "Insertando valores." << endl;
     arbol.Agregar(30);
+    arbol.Agregar(10);
+    arbol.Agregar(40.23);
+    arbol.Agregar(5.5);
+    arbol.Agregar(0);
+    arbol.Agregar(35);
     arbol.Agregar(50);
-    arbol.Agregar(45);
-    cout << "Antes de eliminar nodos:" << endl;
+    arbol.Agregar(-15);
+    arbol.Agregar(25);
+    arbol.ImprimirNivel();
+    
+    cout << "Busqueda de valores." << endl;
+    cout << "¿Est\240 30 en el \240rbol?: " << (arbol.BuscarNodo(30) ? "S\241" : "No") << endl;
+    cout << "¿Est\240 100 en el \240rbol?: " << (arbol.BuscarNodo(100) ? "S\241" : "No") << endl;
+    
+    cout << "\nEliminaci\242n de valores." << endl;
+    arbol.Eliminar(5);
+    arbol.Eliminar(25);
     arbol.ImprimirNivel();
 
-    arbol.Eliminar(-2);
-    arbol.Eliminar(0);
+    cout << "Altura del \240rbol." << endl;
+    cout << "Altura: " << arbol.ObtenerAltura() << endl;
 
-    cout << "Después de eliminar nodos:" << endl;
-    arbol.ImprimirNivel();
- 
+    cout << "\nValor mayor y menor del \240rbol." << endl;
+    cout << "Mayor valor: " << arbol.ObtenerMayor() << endl;
+    cout << "Menor valor: " << arbol.ObtenerMenor() << endl;
 
-//
-//
-//    cout << "Altura " << arbol.ObtenerAltura()<< endl;
-//    cout  << "Mayor"<< arbol.ObtenerMayor()<< endl;
-//    cout  << "Menor "<< arbol.ObtenerMenor()<< endl;
-//
-//    cout << "Buscar 44: " << (arbol.BuscarNodo(44) ? "Si esta" : "No esta") << endl;
+    cout << "\nImpresi\242n en orden ascendente." << endl;
+    arbol.ImprimirAsc();
+
+    cout << "\nImpresi\242n en orden descendente." << endl;
+    arbol.ImprimirDes();
+
+    cout << "\nIntenando vaciar el \240rbol" << endl;
+    arbol.Vaciar();
+    cout << "Nodos despu\202s de vaciar: " << arbol.ObtenerNumNodos() << endl;
+
     return 0;
 }
